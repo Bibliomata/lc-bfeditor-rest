@@ -17,13 +17,13 @@ Only a single host local laptop/desktop environment has been accounted for at pr
 
 The REST endpoint currently lives at port 8287.
 
-__Endpoint:__ /v1/resources/interface-bfeditor
+__Endpoint:__ /v1/resources/interface-quarto
 
 ##### PUT 
 
 * __Use:__ For ingesting a new graph, or overwriting an existing graph (via delete and new insertion).  Requires BFE presentation or middle tier to supply both a UUID and a cataloging username, like khes, ntra, or cred.
 * __Outcome:__ Persists the named graph, with accompanying range-indexed document properties, as managed triples into the MarkLogic triple store, and returns a JSON response showing the document URI locations of the stored files.
-* __Sample request:__ /v1/resources/interface-bfeditor?rs:user={user}&rs:uuid={uuid} (same as POST)
+* __Sample request:__ /v1/resources/interface-quarto?rs:user={user}&rs:uuid={uuid} (same as POST)
 * __Request parameters:__
 * * rs:user=(A cataloging/user shortname)
 * * rs:uuid=(A UUID)

@@ -1,7 +1,7 @@
 xquery version "1.0-ml";
 
-module namespace app = "http://marklogic.com/rest-api/resource/interface-bfeditor";
-import module namespace edit = "http://marklogic.com/modules/lib/interface-bfeditor" at "/helpers/module.BFEditorREST.xqy";
+module namespace app = "http://marklogic.com/rest-api/resource/interface-quarto";
+import module namespace edit = "http://marklogic.com/modules/lib/interface-quarto" at "/helpers/module.BFEditorREST.xqy";
 import module namespace sem = "http://marklogic.com/semantics" at "/MarkLogic/semantics.xqy";
 declare namespace roxy = "http://marklogic.com/roxy";
 declare namespace rapi = "http://marklogic.com/rest-api";

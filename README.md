@@ -7,7 +7,7 @@ This is a Roxy-based deployment, set for an app-type of "rest" as opposed to "ba
 
 Only a single host local laptop/desktop environment has been accounted for at present.
 
-* Edit deploy/build.config for settings.
+* Edit deploy/build.properties for settings.
 * See deploy/ml-config.xml for added range indexes, enabled triple index, and security model settings.
 * ./ml bootstrap
 * ./ml deploy modules (this also handles setting up the REST API)

@@ -1,6 +1,6 @@
 xquery version "1.0-ml";
 
-module namespace edit = "http://marklogic.com/modules/lib/interface-bfeditor";
+module namespace edit = "http://marklogic.com/modules/lib/interface-quarto";
 import module namespace sem = "http://marklogic.com/semantics" at "/MarkLogic/semantics.xqy";
 declare namespace idx = "info:lc/bibframe/editor/idx#";
 declare variable $edit:permissions := (xdmp:permission("rest-reader", "read"), xdmp:permission("rest-writer", "update"));

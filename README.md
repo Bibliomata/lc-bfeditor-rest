@@ -1,7 +1,5 @@
-# lc-bfeditor-rest
 
-
-### REST services for BIBFRAME Editor application
+### quarto - REST services for BIBFRAME Editor application
 
 #### Bootstrap and Deployment
 

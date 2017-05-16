@@ -69,7 +69,7 @@ declare function edit:operation-get-list-graphs($params as map:map) as node() {
             if (map:get($params, "dateTime")  castable as xs:dateTime) then
                 map:get($params, "dateTime") cast as xs:dateTime
             else
-                (:fn:current-dateTime():) xs:dateTime("2016-12-12T00:00:00Z")
+                fn:current-dateTime()
         let $query := cts:properties-fragment-query(
             cts:and-query((
                 cts:element-range-query(xs:QName("idx:graph-ingest-dt"), $sort[2], $dateTime), 
@@ -87,6 +87,7 @@ declare function edit:operation-get-list-graphs($params as map:map) as node() {
                 cts:uri-reference(),
                 cts:element-reference(xs:QName("idx:graph-user")),
                 cts:element-reference(xs:QName("idx:graph-represents-work")),
+                cts:element-reference(xs:QName("idx:graph-work-profile")),
                 cts:element-reference(xs:QName("idx:graph-work-change-date")),
                 cts:element-reference(xs:QName("idx:graph-work-label"))
             ), ($limit, $sort[1], "properties", "concurrent"), $query
@@ -101,8 +102,9 @@ declare function edit:operation-get-list-graphs($params as map:map) as node() {
                             "graphIngestDateTime": $t[1],
                             "user": $t[3],
                             "representsWork": $t[4],
-                            "workChangeDate": $t[5],
-                            "workLabel": $t[6],
+                            "profile": $t[5],
+                            "workChangeDate": $t[6],
+                            "workLabel": $t[7],
                             "docUris": array-node{
                                 cts:uris((), (), cts:collection-query($t[2]))
                             }
@@ -220,10 +222,11 @@ declare private function edit:graph-properties($triples as sem:triple*, $graph-i
     let $store := sem:in-memory-store($triples)
     let $sparql := '
         PREFIX bf: <http://id.loc.gov/ontologies/bibframe/>
+        PREFIX bflc: <http://id.loc.gov/ontologies/bibframe/>
         PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
         PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
-        SELECT ?work ?label ?changeDate WHERE {
-            ?work rdf:type bf:Work ; rdfs:label ?label ; bf:adminMetadata/bf:changeDate ?changeDate .
+        SELECT ?work ?label ?changeDate ?profile WHERE {
+            ?work rdf:type bf:Work ; rdfs:label ?label ; bf:adminMetadata/bf:changeDate ?changeDate ; bf:adminMetadata/bflc:profile ?profile .
         }'
     let $exec := sem:sparql($sparql, (), (), $store)
     let $graph-details :=
@@ -231,6 +234,7 @@ declare private function edit:graph-properties($triples as sem:triple*, $graph-i
             (
                 <idx:graph-represents-work>{map:get($exec, "work")}</idx:graph-represents-work>,
                 <idx:graph-work-change-date>{map:get($exec, "changeDate")}</idx:graph-work-change-date>,
+                <idx:graph-work-profile>{map:get($exec, "profile")}</idx:graph-work-profile>,
                 <idx:graph-work-label>{map:get($exec, "label")}</idx:graph-work-label>,
                 <idx:graph-status>populated</idx:graph-status>
             )

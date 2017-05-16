@@ -8,14 +8,15 @@ This is a Roxy-based deployment, set for an app-type of "rest" as opposed to "ba
 Only a single host local laptop/desktop environment has been accounted for at present.
 
 * Edit deploy/build.properties for settings.
-* See deploy/ml-config.xml for added range indexes, enabled triple index, and security model settings.
-* ./ml bootstrap
-* ./ml deploy modules (this also handles setting up the REST API)
+* See deploy/ml-config.xml for added range indexes, enabled triple index, and security model settings. 
+* Specify your env to ml, e.g. local, dev, prod.
+* ./ml local bootstrap
+* ./ml local deploy modules (this also handles setting up the REST API)
 * No URL rewriting has been attempted yet for providing cleaner, RESTful URIs.  TODO.
 
 #### Sample calls:
 
-The REST endpoint currently lives at port 8287.
+The REST endpoint currently lives at port 8387.
 
 __Endpoint:__ /v1/resources/interface-quarto
 

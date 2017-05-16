@@ -28,7 +28,7 @@ function app:get($context as map:map, $params as map:map) as document-node()* {
     let $accept := map:get($context, "accept-types")
     let $type := map:get($params, "type")
     let $get := 
-        if (fn:matches($type, "GetGraph")) then
+        if (fn:matches($type,"GetGraph")) then
             edit:operation-get-graph($params, $accept)
         else if (fn:matches($type, "ListGraphs")) then
             edit:operation-get-list-graphs($params)

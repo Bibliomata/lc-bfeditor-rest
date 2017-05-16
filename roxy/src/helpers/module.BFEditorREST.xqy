@@ -35,7 +35,7 @@ declare variable $edit:mimes as element(sem:serializations) :=
     
 declare function edit:operation-get-graph($params as map:map, $accept as xs:string) as item()* {
     try {
-        let $graph-iri := map:get($params, "graph")
+        let $graph-iri := sem:iri(map:get($params, "graph"))
         (: For some reason, sem:graph(sem:iri($graph-iri)) returns back duplicate triples per collection in parallel to the graph triple itself, so using cts:triples instead to de-dupe. :)
         (: A SPARQL named graph query with DESCRIBE or SELECT ?s ?p ?o also de-dupes, but cts:triples is faster. :)
         let $triples := cts:triples((), (), (), (), (), cts:collection-query($graph-iri))

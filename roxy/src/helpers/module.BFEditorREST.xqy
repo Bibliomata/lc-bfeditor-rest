@@ -3,6 +3,7 @@ xquery version "1.0-ml";
 module namespace edit = "http://marklogic.com/modules/lib/interface-quarto";
 import module namespace sem = "http://marklogic.com/semantics" at "/MarkLogic/semantics.xqy";
 declare namespace idx = "info:lc/bibframe/editor/idx#";
+declare copy-namespaces preserve, inherit;
 declare variable $edit:permissions := (xdmp:permission("rest-reader", "read"), xdmp:permission("rest-writer", "update"));
 declare variable $edit:spawn-options := <options xmlns="xdmp:eval"><transaction-mode>update-auto-commit</transaction-mode></options>;
 declare variable $edit:mimes as element(sem:serializations) :=
@@ -33,12 +34,13 @@ declare variable $edit:mimes as element(sem:serializations) :=
         </sem:accept>
     </sem:serializations>;
     
-declare function edit:operation-get-graph($params as map:map, $accept as xs:string) as item()* {
-    try {
+declare function edit:operation-get-graph($params as map:map, $accept as xs:string) as item()* {    
+    try {	
         let $graph-iri := sem:iri(map:get($params, "graph"))
         (: For some reason, sem:graph(sem:iri($graph-iri)) returns back duplicate triples per collection in parallel to the graph triple itself, so using cts:triples instead to de-dupe. :)
         (: A SPARQL named graph query with DESCRIBE or SELECT ?s ?p ?o also de-dupes, but cts:triples is faster. :)
-        let $triples := cts:triples((), (), (), (), (), cts:collection-query($graph-iri))
+	let $prefixes := sem:prefixes("bf: http://id.loc.gov/ontologies/bibframe/ mads: http://www.loc.gov/standards/mads/rdf/v1#")
+        let $triples := cts:triples(sem:curie-shorten((), $prefixes), (), (), (), (), cts:collection-query($graph-iri))
         return
             if ($triples instance of empty-sequence()) then
                 $triples
@@ -57,7 +59,7 @@ declare function edit:operation-get-list-graphs($params as map:map) as node() {
         let $user := map:get($params, "user")
         let $limit := (: limit 10 by default :)
             if (map:get($params, "limit") instance of empty-sequence()) then
-                "limit=10"
+                "limit=10000"
             else
                 "limit=" || map:get($params, "limit") cast as xs:string
         let $sort := (:ascending or descending:)
@@ -69,7 +71,7 @@ declare function edit:operation-get-list-graphs($params as map:map) as node() {
             if (map:get($params, "dateTime")  castable as xs:dateTime) then
                 map:get($params, "dateTime") cast as xs:dateTime
             else
-                (:fn:current-dateTime():) xs:dateTime("2016-12-12T00:00:00Z")
+                fn:current-dateTime() (:xs:dateTime("2016-12-12T00:00:00Z"):)
         let $query := cts:properties-fragment-query(
             cts:and-query((
                 cts:element-range-query(xs:QName("idx:graph-ingest-dt"), $sort[2], $dateTime), 

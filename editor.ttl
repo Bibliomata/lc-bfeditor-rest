@@ -10,6 +10,7 @@
   a <http://id.loc.gov/ontologies/bibframe/Work>, <http://id.loc.gov/ontologies/bibframe/Text> ;
   ns0:adminMetadata [
     a ns0:AdminMetadata ;
+    ns1:profile "profile:bf2:NotatedMusic:Work";
     ns0:status [
       a ns0:Status ;
       ns0:code "c"
